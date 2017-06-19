@@ -214,6 +214,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        socket.emit("gps-off");
+        socket.disconnect();
+    }
 
     /**
      * Manipulates the map once available.
