@@ -10,12 +10,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/cari_login_bg"
-            android:scaleType="centerCrop"/>
+        android:orientation="vertical"
+        android:background="#262626">
 
         <ImageView
             android:layout_width="150dp"
@@ -93,7 +89,7 @@
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#880E4F"
+            android:background="#0b0b0b"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="49dp"
             android:layout_below="@+id/edit_text_box"

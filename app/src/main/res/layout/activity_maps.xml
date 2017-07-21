@@ -16,34 +16,55 @@
         android:layout_alignParentTop="true"
         class="com.google.android.gms.maps.SupportMapFragment" />
 
-    <TextView
-        android:id="@+id/latlongLocation"
+    <RelativeLayout
+        android:id="@+id/container_latlongLocation"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_alignParentBottom="true"
-        android:background="#ff058fff"
+        android:background="#252525"
         android:gravity="bottom"
-        android:paddingBottom="5dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="5dp"
-        android:textColor="#ffffffff" />
+        android:textColor="#0d0d0d"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            android:id="@+id/textview_longlat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="Xenia"
+            android:textSize="25sp"
+            android:textColor="#fff"/>
+        </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/burger_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/burger_button"
+        android:layout_marginLeft="10dp">
+
+    </Button>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="18dp"
+        android:layout_marginLeft="70dp"
         android:layout_marginRight="18dp"
-        android:layout_marginTop="14dp">
+        android:layout_marginTop="50dp">
         <EditText
             android:id="@+id/searchView1"
             android:layout_width="match_parent"
-            android:layout_height="34dp"
+            android:layout_height="50dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:hint="Cari Mobil"
+            android:hint="Car's ID"
             android:textColor="@android:color/black"
             android:background="@android:color/white"
             android:imeOptions="actionGo">
@@ -51,10 +72,10 @@
 
         <Button
             android:id="@+id/button1"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:paddingRight="20dp"
-            android:background="@drawable/search"
+            android:background="@drawable/search_car"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
@@ -67,9 +88,9 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@drawable/ic_my_location_white_24dp"
-        app:cb_color="@color/colorPrimary"
+        app:cb_color="#181818"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="110dp"
         android:layout_marginRight="10dp"
         android:layout_alignParentRight="true"/>
     </RelativeLayout>

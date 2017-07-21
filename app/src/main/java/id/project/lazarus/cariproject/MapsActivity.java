@@ -10,11 +10,18 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,8 +43,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Map;
 
 import at.markushi.ui.CircleButton;
 import io.socket.client.IO;
@@ -45,47 +55,77 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 
 import static android.R.id.button1;
+import static android.R.id.switch_widget;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback{
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
+        NavigationView.OnNavigationItemSelectedListener{
 
     Button button1;
+    Button burger_button;
     EditText searchview;
     TextView locationTv;
     private LocationManager locationManager;
     private LocationListener locationListener;
     private CircleButton my_location;
-    Marker myLocationMarker;
-
+    Marker myLocationMarker = null;
+    private TextView textLongLat;
     JSONObject json;
 
     private GoogleMap mMap;
     private Socket socket;
     Handler handler;
     Marker vehicleMarker;
+    private DrawerLayout drawerLayout;
+    private List<Marker> markers;
+    SharedPreferenceManager sharedPreferenceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_deletable);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        sharedPreferenceManager = SharedPreferenceManager.getInstance(this);
         handler = new Handler(Looper.getMainLooper());
+        markers = new ArrayList<>();
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        textLongLat = (TextView) findViewById(R.id.textview_longlat);
         button1 = (Button)findViewById(R.id.button1);
+        burger_button = (Button)findViewById(R.id.burger_button);
+        burger_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    drawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
+
         searchview = (EditText)findViewById(R.id.searchView1);
-        locationTv = (TextView)findViewById(R.id.latlongLocation);
+      //  locationTv = (TextView)findViewById(R.id.latlongLocation);
         my_location = (CircleButton) findViewById(R.id.my_location);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 LatLng myLocation = new LatLng(location.getLatitude(),location.getLongitude());
-                if(myLocationMarker!=null){
-                    myLocationMarker.remove();
+                if(myLocationMarker==null) {
+                    myLocationMarker = mMap.addMarker(new MarkerOptions().position(myLocation).title("Latitude:" + location.getLatitude() + ", Longitude:"
+                            + location.getLongitude()));
+                    markers.add(myLocationMarker);
                 }
-                myLocationMarker = mMap.addMarker(new MarkerOptions().position(myLocation).title("Latitude:" + location.getLatitude() + ", Longitude:"
-                        + location.getLongitude()));
+                else myLocationMarker.setPosition(myLocation);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(13f));
             }
@@ -240,6 +280,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(new Intent(MapsActivity.this, ProfileActivity.class));
             }
         });
+        mMap.setOnMarkerClickListener(this);
         // Add a marker in Sydney and move the camera
         getLocation();
 
@@ -258,6 +299,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Log.d("SMD","Locatin : getLocation");
         locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER,locationListener,null);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
+        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_slideshow) {
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_logout) {
+            sharedPreferenceManager.logout();
+            startActivity(new Intent(MapsActivity.this, LoginActivity.class));
+            finish();
+            Toast.makeText(this, "Logout berhasil", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     protected void search(List<Address> addresses) {
@@ -299,4 +368,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Log.d("Map","markerclicked");
+        for(int i=0;i<markers.size();i++){
+            if(marker.getTitle().equalsIgnoreCase(markers.get(i).getTitle())){
+                Log.d("Map","markerFound");
+                textLongLat.setText(marker.getTitle());
+            }
+        }
+        return false;
+    }
 }
