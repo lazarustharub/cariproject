@@ -28,18 +28,18 @@ public class ProfileActivity extends AppCompatActivity {
     TextView bought_car;
     TextView service_car;
     TextView license_car;
+    String id_car;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
+        id_car = getIntent().getStringExtra("serial_id");
         initView();
         if(Util.InternetConnectionStatus(this)){
             initData();
         }else{
             Toast.makeText(this,"Failed Connecting Internet",Toast.LENGTH_LONG).show();
-
         }
 
     }
@@ -62,6 +62,15 @@ public class ProfileActivity extends AppCompatActivity {
                                 String text_pictureprofil = jsoncar.getString(Api.RESPONSE_PICTUREPROFIL);
                                 String text_picturesec = jsoncar.getString(Api.RESPONSE_PICTURESEC);
                                 String text_colorcar = jsoncar.getString(Api.RESPONSE_COLORCAR);
+
+                                boolean status = jsoncar.getInt(Api.RESPONSE_STATUS) == 1 ? true:false;
+
+                                if(status){
+                                    // Do Something;
+                                }
+                                else {
+                                    // Do something;
+                                }
 
                                 name_car.setText(text_namecar);
                                 year_car.setText(text_yearcar);
@@ -89,7 +98,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put(Api.PARAM_IDCAR, "1");
+                params.put(Api.PARAM_IDCAR, id_car);
                 return params;
             }
         };

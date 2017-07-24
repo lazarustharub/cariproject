@@ -36,6 +36,11 @@ public class SharedPreferenceManager {
 
     }
 
+    public String getNomerInduk(){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFNAME,Context.MODE_PRIVATE);
+        return sharedPreferences.getString(KEY_NOMERINDUK,null);
+    }
+
     public boolean isLogin(){
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFNAME, Context.MODE_PRIVATE);
         return ((sharedPreferences.contains(KEY_LOGIN_STATUS)&& sharedPreferences.getBoolean(KEY_LOGIN_STATUS,false)));

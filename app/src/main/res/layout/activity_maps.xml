@@ -16,28 +16,28 @@
         android:layout_alignParentTop="true"
         class="com.google.android.gms.maps.SupportMapFragment" />
 
-    <RelativeLayout
-        android:id="@+id/container_latlongLocation"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:background="#252525"
-        android:gravity="bottom"
-        android:textColor="#0d0d0d"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/container_latlongLocation"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:background="#252525"-->
+        <!--android:gravity="bottom"-->
+        <!--android:textColor="#0d0d0d"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginRight="20dp">-->
 
-        <TextView
-            android:id="@+id/textview_longlat"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:text="Xenia"
-            android:textSize="25sp"
-            android:textColor="#fff"/>
-        </RelativeLayout>
+        <!--<TextView-->
+            <!--android:id="@+id/textview_longlat"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:text="Xenia"-->
+            <!--android:textSize="25sp"-->
+            <!--android:textColor="#fff"/>-->
+        <!--</RelativeLayout>-->
 
 
     <Button

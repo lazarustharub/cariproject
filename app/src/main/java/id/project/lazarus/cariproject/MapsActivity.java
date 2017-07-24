@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -37,25 +36,19 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.nearby.messages.EddystoneUid;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Map;
 
 import at.markushi.ui.CircleButton;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
-
-import static android.R.id.button1;
-import static android.R.id.switch_widget;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener,
         NavigationView.OnNavigationItemSelectedListener{
@@ -69,6 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private CircleButton my_location;
     Marker myLocationMarker = null;
     private TextView textLongLat;
+    JSONObject jsonGPS;
     JSONObject json;
 
     private GoogleMap mMap;
@@ -102,7 +96,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        textLongLat = (TextView) findViewById(R.id.textview_longlat);
+//        textLongLat = (TextView) findViewById(R.id.textview_longlat);
         button1 = (Button)findViewById(R.id.button1);
         burger_button = (Button)findViewById(R.id.burger_button);
         burger_button.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +117,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if(myLocationMarker==null) {
                     myLocationMarker = mMap.addMarker(new MarkerOptions().position(myLocation).title("Latitude:" + location.getLatitude() + ", Longitude:"
                             + location.getLongitude()));
-                    markers.add(myLocationMarker);
+//                    markers.add(myLocationMarker);
+                    Log.d("Map", "marker created : "+myLocationMarker.getTitle());
                 }
                 else myLocationMarker.setPosition(myLocation);
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
@@ -176,7 +171,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
         try {
-            socket = IO.socket("http://192.168.1.155:3000");
+            socket = IO.socket("http://192.168.1.136:3000");
             socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
 
                 @Override
@@ -201,10 +196,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 @Override
                 public void call(Object... args) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MapsActivity.this, "Socket disconnected", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
 
+            }).on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MapsActivity.this, "Socket error : ", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }).on(Socket.EVENT_CONNECT_TIMEOUT, new Emitter.Listener() {
+                @Override
+                public void call(Object... args) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MapsActivity.this, "Socket timeout", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             });
-            socket.connect();
 
             // Receiving an object
             socket.on("gps-data", new Emitter.Listener() {
@@ -212,9 +232,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 public void call(Object... args) {
                     try {
                         String obj = (String) args[0];
-
                         json = new JSONObject(obj);
-                        Log.d("Maps","message : " + json);
+                        jsonGPS = new JSONObject(json.getString("message"));
+                        Log.d("Map","GPS data : " +jsonGPS);
+                        final String serial_id =json.getString("serial_id");
+                        Log.d("Maps","message : " + jsonGPS);
                         handler.post(new Runnable() {
                         @Override
                         public void run() {
@@ -222,17 +244,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     });
 
-                        final Double lat = Double.valueOf(json.getString("lat"));
-                        final Double lng = Double.valueOf(json.getString("lon"));
+                        final Double lat = Double.valueOf(jsonGPS.getString("lat"));
+                        final Double lng = Double.valueOf(jsonGPS.getString("lon"));
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                if(vehicleMarker != null){
-                                    vehicleMarker.remove();
+                                if(vehicleMarker == null){
+                                    vehicleMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lng)).title(serial_id));
+                                    CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng),13);
+                                    mMap.animateCamera(cu);
                                 }
-                                vehicleMarker = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lng)));
-                                CameraUpdate cu = CameraUpdateFactory.newLatLng(new LatLng(lat,lng));
-                                mMap.animateCamera(cu);
+                                else vehicleMarker.setPosition(new LatLng(lat,lng));
                             }
                         });
 
@@ -248,6 +270,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 }
             });
+            socket.connect();
         }
         catch (URISyntaxException e) {
             e.printStackTrace();
@@ -274,12 +297,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                startActivity(new Intent(MapsActivity.this, ProfileActivity.class));
-            }
-        });
+
         mMap.setOnMarkerClickListener(this);
         // Add a marker in Sydney and move the camera
         getLocation();
@@ -307,20 +325,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_carlist) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+            startActivity(new Intent(MapsActivity.this, CarListActivity.class));
+//        } else if (id == R.id.nav_userprofile) {
 
-        } else if (id == R.id.nav_slideshow) {
+//        } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
+//        } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_logout) {
             sharedPreferenceManager.logout();
             startActivity(new Intent(MapsActivity.this, LoginActivity.class));
             finish();
             Toast.makeText(this, "Logout berhasil", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_send) {
+//        } else if (id == R.id.nav_send) {
 
         }
 
@@ -370,13 +389,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Log.d("Map","markerclicked");
-        for(int i=0;i<markers.size();i++){
-            if(marker.getTitle().equalsIgnoreCase(markers.get(i).getTitle())){
-                Log.d("Map","markerFound");
-                textLongLat.setText(marker.getTitle());
+        Log.d("Map","markerclicked: "+markers.size());
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent intent = new Intent(MapsActivity.this,ProfileActivity.class);
+                intent.putExtra("serial_id",marker.getTitle());
+                startActivity(intent);
             }
-        }
+        });
+//        for(int i=0;i<markers.size();i++){
+////            if(marker.getTitle().equalsIgnoreCase(markers.get(i).getTitle())){
+//                Log.d("Map","markerFound");
+//                textLongLat.setText(marker.getTitle());
+////            }
+//        }
         return false;
     }
 }
