@@ -29,6 +29,7 @@ public class ProfileActivity extends AppCompatActivity {
     TextView service_car;
     TextView license_car;
     String id_car;
+    TextView status_car;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +67,10 @@ public class ProfileActivity extends AppCompatActivity {
                                 boolean status = jsoncar.getInt(Api.RESPONSE_STATUS) == 1 ? true:false;
 
                                 if(status){
-                                    // Do Something;
+                                    status_car.setText("Online");
                                 }
                                 else {
-                                    // Do something;
+                                    status_car.setText("Offline");
                                 }
 
                                 name_car.setText(text_namecar);
@@ -113,6 +114,6 @@ public class ProfileActivity extends AppCompatActivity {
         bought_car = (TextView) findViewById(R.id.bought_car);
         service_car = (TextView) findViewById(R.id.service_car);
         license_car = (TextView) findViewById(R.id.license_car);
-
+        status_car = (TextView) findViewById(R.id.status_car);
     }
 }
