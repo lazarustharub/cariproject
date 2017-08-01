@@ -10,54 +10,54 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="#262626">
+        android:background="#78def7"
+        android:orientation="vertical">
 
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="100dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/cari_logo_main"
+            android:id="@+id/imageView"
+            android:layout_width="250dp"
+            android:layout_height="100dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:id="@+id/imageView" />
+            android:layout_marginTop="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/cari_logo_main" />
 
         <ImageView
+            android:id="@+id/loginimage"
             android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="180dp"
-            android:layout_alignParentRight="true"
+            android:layout_height="25dp"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/cari_login_text"
-            android:id="@+id/loginimage" />
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="250dp"
+            android:src="@drawable/cari_login_text" />
 
         <LinearLayout
+            android:id="@+id/edit_text_box"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="#aaffffff"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="50dp"
             android:layout_below="@+id/loginimage"
-            android:id="@+id/edit_text_box"
-            >
+            android:layout_centerInParent="true"
+            android:layout_marginTop="0dp"
+            android:background="#aaffffff"
+            android:orientation="vertical"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp">
+
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingRight="50dp"
                 android:paddingLeft="50dp"
-                android:paddingTop="10dp"
-                >
+                android:paddingRight="50dp"
+                android:paddingTop="10dp">
 
                 <EditText
                     android:id="@+id/input_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Email"
-                    android:textColor="#880E4F"
-                    />
+                    android:textColor="#880E4F" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -65,49 +65,57 @@
                 android:id="@+id/input_layout_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingRight="50dp"
-                android:paddingLeft="50dp"
-                android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                >
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                android:paddingTop="10dp">
 
                 <EditText
                     android:id="@+id/input_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ems="10"
                     android:hint="Password"
                     android:inputType="textPassword"
-                    android:ems="10"
-                    android:textColor="#880E4F"
-                    />
+                    android:textColor="#880E4F" />
 
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="100dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:textSize="15dp"
+            android:textAlignment="center"
+            android:textColor="#ffff"
+            android:text="*Untuk yang belum terdaftar silahkan menghubungi admin mobil PENS"
+            />
 
         <FrameLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/frame_button_log_in"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#0b0b0b"
+            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="49dp"
-            android:layout_below="@+id/edit_text_box"
-            android:id="@+id/frame_button_log_in"
+            android:background="#f9f9f9"
             >
+
             <Button
-                style="?android:attr/buttonStyleSmall"
-                android:background="?android:attr/selectableItemBackground"
-                android:textColor="@android:color/white"
-                android:textAllCaps="true"
-                android:layout_width="118dp"
-                android:layout_height="wrap_content"
-                android:text="Log In"
                 android:id="@+id/button_log_in"
-                />
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="Log In"
+                android:layout_gravity="center"
+                android:textAllCaps="true"
+                android:textColor="#009fc6" />
         </FrameLayout>
-
-
 
 
     </RelativeLayout>

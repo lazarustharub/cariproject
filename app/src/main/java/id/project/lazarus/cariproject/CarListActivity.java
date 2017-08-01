@@ -2,12 +2,14 @@ package id.project.lazarus.cariproject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -48,6 +50,15 @@ public class CarListActivity extends AppCompatActivity {
         }else{
             Toast.makeText(this,"Failed Connecting Internet",Toast.LENGTH_LONG).show();
         }
+
+        list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(CarListActivity.this,ProfileActivity.class);
+                intent.putExtra("serial_id", "0000000035d20c34");
+                startActivity(intent);
+            }
+        });
 
 
     }

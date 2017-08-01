@@ -55,6 +55,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     Button button1;
     Button burger_button;
+//    Button skip;
     EditText searchview;
     TextView locationTv;
     private LocationManager locationManager;
@@ -97,6 +98,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         navigationView.setNavigationItemSelectedListener(this);
 
 //        textLongLat = (TextView) findViewById(R.id.textview_longlat);
+//        skip = (Button) findViewById(R.id.skip);
+//        skip.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(MapsActivity.this, ProfileActivity.class));
+//            }
+//        });
         button1 = (Button)findViewById(R.id.button1);
         burger_button = (Button)findViewById(R.id.burger_button);
         burger_button.setOnClickListener(new View.OnClickListener() {
@@ -171,7 +179,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
         try {
-            socket = IO.socket("http://192.168.1.136:3000");
+//            socket = IO.socket("http://192.168.1.136:3000");
+            socket = IO.socket("http://192.168.1.115:3000");
+
             socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
 
                 @Override

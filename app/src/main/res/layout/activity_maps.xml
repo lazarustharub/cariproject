@@ -5,8 +5,7 @@
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="id.project.lazarus.cariproject.MapsActivity"
-    >
+    tools:context="id.project.lazarus.cariproject.MapsActivity">
 
     <fragment
         android:id="@+id/map"
@@ -16,38 +15,19 @@
         android:layout_alignParentTop="true"
         class="com.google.android.gms.maps.SupportMapFragment" />
 
-    <!--<RelativeLayout-->
-        <!--android:id="@+id/container_latlongLocation"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="100dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:background="#252525"-->
-        <!--android:gravity="bottom"-->
-        <!--android:textColor="#0d0d0d"-->
-        <!--android:layout_marginLeft="20dp"-->
-        <!--android:layout_marginRight="20dp">-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/textview_longlat"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--android:layout_marginRight="10dp"-->
-            <!--android:text="Xenia"-->
-            <!--android:textSize="25sp"-->
-            <!--android:textColor="#fff"/>-->
-        <!--</RelativeLayout>-->
-
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/skip"-->
+        <!--android:text="skip"/>-->
 
     <Button
         android:id="@+id/burger_button"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="50dp"
-        android:background="@drawable/burger_button"
+        android:background="@android:drawable/ic_lock_idle_low_battery"
         android:layout_marginLeft="10dp">
-
     </Button>
 
     <RelativeLayout
@@ -75,7 +55,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:paddingRight="20dp"
-            android:background="@drawable/search_car"
+            android:background="@android:drawable/ic_lock_idle_low_battery"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
@@ -87,7 +67,7 @@
         android:id="@+id/my_location"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:src="@drawable/ic_my_location_white_24dp"
+        android:src="@android:drawable/ic_lock_idle_low_battery"
         app:cb_color="#181818"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="110dp"

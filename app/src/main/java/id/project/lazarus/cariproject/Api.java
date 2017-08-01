@@ -9,7 +9,7 @@ import java.net.URL;
 public class Api {
     public static final String URL_PREFIX = "http://";
     public static final String API_PREFIX = "/Api";
-    public static final String URLPOINT = URL_PREFIX + "192.168.1.136/cariadmin_db/web" + API_PREFIX;
+    public static final String URLPOINT = URL_PREFIX + "115.85.70.168:1234/cariadmin_db/web" + API_PREFIX;
     public static final String VEHICLEPREFIX = "/vehicle";
     public static final String LOCATIONPREFIX = "/location";
     public static final String USERPREFIX = "/user";

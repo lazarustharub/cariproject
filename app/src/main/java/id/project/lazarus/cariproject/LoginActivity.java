@@ -62,7 +62,9 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d("Car-i","email : "+email);
                 Log.d("Car-i","password : "+password);
 
-                StringRequest str_req = new StringRequest(Request.Method.POST, "http://192.168.1.136/cariadmin_db/web/Api/users/",
+//                StringRequest str_req = new StringRequest(Request.Method.POST, "http://192.168.1.136/cariadmin_db/web/Api/users/",
+                StringRequest str_req = new StringRequest(Request.Method.POST, "http://115.85.70.168:1234/cariadmin_db/web/Api/users/",
+
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
