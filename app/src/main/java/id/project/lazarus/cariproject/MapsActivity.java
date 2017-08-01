@@ -180,7 +180,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
         try {
 //            socket = IO.socket("http://192.168.1.136:3000");
-            socket = IO.socket("http://192.168.1.115:3000");
+            socket = IO.socket("http://192.168.1.136:3000");
 
             socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
 
@@ -246,6 +246,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         jsonGPS = new JSONObject(json.getString("message"));
                         Log.d("Map","GPS data : " +jsonGPS);
                         final String serial_id =json.getString("serial_id");
+                        final String speed_car =jsonGPS.getString("speed");
+                        final String alti = jsonGPS.getString("alti");
                         Log.d("Maps","message : " + jsonGPS);
                         handler.post(new Runnable() {
                         @Override
